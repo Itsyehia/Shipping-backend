@@ -92,19 +92,31 @@ func main() {
 
 func handleCORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// Replace localhost with your frontend's deployed URL
-		w.Header().Set("Access-Control-Allow-Origin", "https://front-end-git-yehiashaikhoun-dev.apps.rm2.thpm.p1.openshiftapps.com")
+		// Allow the frontend's deployed URL
+		// If you expect multiple origins, you could adjust the logic to dynamically handle it
+		// For now, we will assume that the frontend URL is static
+		origin := r.Header.Get("Origin")
+		if origin == "https://front-end-git-yehiashaikhoun-dev.apps.rm2.thpm.p1.openshiftapps.com" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		} else {
+			// Optionally, log the origin or reject if it's not allowed
+			w.Header().Set("Access-Control-Allow-Origin", "https://front-end-git-yehiashaikhoun-dev.apps.rm2.thpm.p1.openshiftapps.com")
+		}
+
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		// Handle preflight requests
+		// Handle preflight requests (OPTIONS)
 		if r.Method == http.MethodOptions {
 			w.WriteHeader(http.StatusOK)
 			return
 		}
+
+		// Call the next handler in the chain
 		next.ServeHTTP(w, r)
 	}
 }
+
 
 // HealthCheck handler
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
