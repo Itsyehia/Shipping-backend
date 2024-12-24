@@ -46,5 +46,12 @@ RUN chmod 755 /app
 # Expose the port the app runs on
 EXPOSE 4300
 
+# Add environment variables for MySQL connection
+ENV DB_HOST=mysql-service
+ENV DB_PORT=3306
+ENV MYSQL_USER=admin
+ENV MYSQL_PASSWORD=adminpass
+ENV MYSQL_DATABASE=tools
+
 # Command to run the executable using absolute path
 CMD ["/app/main"]
