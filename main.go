@@ -39,11 +39,11 @@ type Order struct {
 // dbConn creates and returns a connection to the database
 func dbConn() (db *sql.DB) {
     dbDriver := "mysql"
-    dbUser := os.Getenv("DB_USER")
-    dbPass := os.Getenv("DB_PASSWORD")
-    dbHost := os.Getenv("DB_HOST")
-    dbPort := os.Getenv("DB_PORT")
-    dbName := os.Getenv("DB_NAME")
+    dbUser := os.Getenv("MYSQL_USER")
+    dbPass := os.Getenv("MYSQL_PASSWORD")
+    dbHost := os.Getenv("DB_HOST") // Set this to the MySQL pod's service name
+    dbPort := os.Getenv("DB_PORT") // Default MySQL port: 3306
+    dbName := os.Getenv("MYSQL_DATABASE")
 
     dsn := dbUser + ":" + dbPass + "@tcp(" + dbHost + ":" + dbPort + ")/" + dbName
     db, err := sql.Open(dbDriver, dsn)
@@ -51,7 +51,6 @@ func dbConn() (db *sql.DB) {
         log.Fatal("Database connection error: ", err)
     }
 
-    // It's good practice to ping the database to ensure the connection is valid
     err = db.Ping()
     if err != nil {
         log.Fatal("Database ping error: ", err)
