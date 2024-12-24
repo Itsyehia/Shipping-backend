@@ -90,10 +90,10 @@ func main() {
 	
 }
 
-// handleCORS middleware to handle CORS
 func handleCORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+		// Replace localhost with your frontend's deployed URL
+		w.Header().Set("Access-Control-Allow-Origin", "https://front-end-git-yehiashaikhoun-dev.apps.rm2.thpm.p1.openshiftapps.com")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
